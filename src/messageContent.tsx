@@ -7,7 +7,7 @@ How I got this item is a funny story really. I didn't make this artefact myself.
 
 Now, Tink, you must undoubtly be wondering what this strangely shaped thing is. More surely, you must have already concluded it's a key. I've used it to lock away a number of important things, including my beloved workshop. Fret not, I will tell you what you hold in your hands. This weirdly shaped golden key is the result of Pure Crystalization of Soul Essence (PCSE). It was invented by my partner in the arcane arts, and he entrusted it to me for safe keeping, the only other one in existence being in his possession.
 
-He never fully explained to me where he got it from, but all I know is that it involves sealing part of yourself, your very soul, inside a gem like crystal. He then went on to smith it inside a key like structure. It's a befitting thing, for he was always busy safe guarding his secrets, afraid it would fall into the wrong hands.
+He never fully explained to me where he got it from, but all I know is that it involves sealing part of yourself, your very soul, inside a gem like crystal. I'm sure he wrote about it in his notes somewhere. He then went on to smith it inside a key like structure. It's a befitting thing, for he was always busy safe guarding his secrets, afraid it would fall into the wrong hands.
 
 That means that part of my friend lives on in this item. You heard it right, your key is alive! You're holding part of my best friend, Tink. I urge you to take good care of it, please. I doubt the key will ever talk to you, but don't be mistaken, it has a will of its own. It's a key, but if the key doesn't agree with your intentions for opening whatever lock you've got in front of you, you best know that lock will stay closed.
 
