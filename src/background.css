@@ -1,9 +1,22 @@
+/* === GLOBAL RESET === */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
 /* === BACKGROUND EFFECTS CONTAINER === */
 .background-effects {
   position: fixed;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   z-index: 0;
 }
 
@@ -15,13 +28,25 @@
   width: 800px;
   height: 800px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.08) 0%, rgba(0, 100, 200, 0.04) 40%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(0, 255, 255, 0.08) 0%,
+    rgba(0, 100, 200, 0.04) 40%,
+    transparent 70%
+  );
   animation: glow-pulse 4s ease-in-out infinite;
 }
 
 @keyframes glow-pulse {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 }
 
 /* === HUD RINGS (tilted orbital rings) === */
@@ -46,17 +71,25 @@
   border-color: rgba(0, 255, 255, 0.4);
   animation: ring-spin-1 12s linear infinite;
   mask: conic-gradient(
-    black 0deg 60deg, transparent 60deg 70deg,
-    black 70deg 150deg, transparent 150deg 165deg,
-    black 165deg 240deg, transparent 240deg 250deg,
-    black 250deg 330deg, transparent 330deg 345deg,
+    black 0deg 60deg,
+    transparent 60deg 70deg,
+    black 70deg 150deg,
+    transparent 150deg 165deg,
+    black 165deg 240deg,
+    transparent 240deg 250deg,
+    black 250deg 330deg,
+    transparent 330deg 345deg,
     black 345deg 360deg
   );
   -webkit-mask: conic-gradient(
-    black 0deg 60deg, transparent 60deg 70deg,
-    black 70deg 150deg, transparent 150deg 165deg,
-    black 165deg 240deg, transparent 240deg 250deg,
-    black 250deg 330deg, transparent 330deg 345deg,
+    black 0deg 60deg,
+    transparent 60deg 70deg,
+    black 70deg 150deg,
+    transparent 150deg 165deg,
+    black 165deg 240deg,
+    transparent 240deg 250deg,
+    black 250deg 330deg,
+    transparent 330deg 345deg,
     black 345deg 360deg
   );
 }
@@ -74,19 +107,29 @@
   border-color: rgba(100, 220, 255, 0.25);
   animation: ring-spin-3 8s linear infinite;
   mask: conic-gradient(
-    black 0deg 30deg, transparent 30deg 40deg,
-    black 40deg 90deg, transparent 90deg 100deg,
-    black 100deg 180deg, transparent 180deg 190deg,
-    black 190deg 250deg, transparent 250deg 260deg,
-    black 260deg 310deg, transparent 310deg 320deg,
+    black 0deg 30deg,
+    transparent 30deg 40deg,
+    black 40deg 90deg,
+    transparent 90deg 100deg,
+    black 100deg 180deg,
+    transparent 180deg 190deg,
+    black 190deg 250deg,
+    transparent 250deg 260deg,
+    black 260deg 310deg,
+    transparent 310deg 320deg,
     black 320deg 360deg
   );
   -webkit-mask: conic-gradient(
-    black 0deg 30deg, transparent 30deg 40deg,
-    black 40deg 90deg, transparent 90deg 100deg,
-    black 100deg 180deg, transparent 180deg 190deg,
-    black 190deg 250deg, transparent 250deg 260deg,
-    black 260deg 310deg, transparent 310deg 320deg,
+    black 0deg 30deg,
+    transparent 30deg 40deg,
+    black 40deg 90deg,
+    transparent 90deg 100deg,
+    black 100deg 180deg,
+    transparent 180deg 190deg,
+    black 190deg 250deg,
+    transparent 250deg 260deg,
+    black 260deg 310deg,
+    transparent 310deg 320deg,
     black 320deg 360deg
   );
 }
@@ -107,20 +150,36 @@
 }
 
 @keyframes ring-spin-1 {
-  from { transform: rotateX(65deg) rotateZ(0deg); }
-  to { transform: rotateX(65deg) rotateZ(360deg); }
+  from {
+    transform: rotateX(65deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(65deg) rotateZ(360deg);
+  }
 }
 @keyframes ring-spin-2 {
-  from { transform: rotateX(70deg) rotateY(20deg) rotateZ(360deg); }
-  to { transform: rotateX(70deg) rotateY(20deg) rotateZ(0deg); }
+  from {
+    transform: rotateX(70deg) rotateY(20deg) rotateZ(360deg);
+  }
+  to {
+    transform: rotateX(70deg) rotateY(20deg) rotateZ(0deg);
+  }
 }
 @keyframes ring-spin-3 {
-  from { transform: rotateX(55deg) rotateY(-15deg) rotateZ(0deg); }
-  to { transform: rotateX(55deg) rotateY(-15deg) rotateZ(360deg); }
+  from {
+    transform: rotateX(55deg) rotateY(-15deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(55deg) rotateY(-15deg) rotateZ(360deg);
+  }
 }
 @keyframes ring-spin-4 {
-  from { transform: rotateX(80deg) rotateZ(0deg); }
-  to { transform: rotateX(80deg) rotateZ(360deg); }
+  from {
+    transform: rotateX(80deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(80deg) rotateZ(360deg);
+  }
 }
 
 /* === ORBITING DOTS === */
@@ -138,7 +197,9 @@
   height: 6px;
   background: cyan;
   border-radius: 50%;
-  box-shadow: 0 0 8px cyan, 0 0 20px rgba(0, 255, 255, 0.5);
+  box-shadow:
+    0 0 8px cyan,
+    0 0 20px rgba(0, 255, 255, 0.5);
 }
 
 .orbit-dot--1 {
@@ -158,24 +219,44 @@
 }
 
 @keyframes orbit-1 {
-  from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
+  from {
+    transform: rotate(0deg) translateX(180px) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(180px) rotate(-360deg);
+  }
 }
 @keyframes orbit-2 {
-  from { transform: rotate(0deg) translateX(220px) rotate(0deg); }
-  to { transform: rotate(-360deg) translateX(220px) rotate(360deg); }
+  from {
+    transform: rotate(0deg) translateX(220px) rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg) translateX(220px) rotate(360deg);
+  }
 }
 @keyframes orbit-3 {
-  from { transform: rotate(120deg) translateX(150px) rotate(0deg); }
-  to { transform: rotate(480deg) translateX(150px) rotate(-360deg); }
+  from {
+    transform: rotate(120deg) translateX(150px) rotate(0deg);
+  }
+  to {
+    transform: rotate(480deg) translateX(150px) rotate(-360deg);
+  }
 }
 @keyframes orbit-4 {
-  from { transform: rotate(200deg) translateX(260px) rotate(0deg); }
-  to { transform: rotate(560deg) translateX(260px) rotate(-360deg); }
+  from {
+    transform: rotate(200deg) translateX(260px) rotate(0deg);
+  }
+  to {
+    transform: rotate(560deg) translateX(260px) rotate(-360deg);
+  }
 }
 @keyframes orbit-5 {
-  from { transform: rotate(45deg) translateX(130px) rotate(0deg); }
-  to { transform: rotate(405deg) translateX(130px) rotate(-360deg); }
+  from {
+    transform: rotate(45deg) translateX(130px) rotate(0deg);
+  }
+  to {
+    transform: rotate(405deg) translateX(130px) rotate(-360deg);
+  }
 }
 
 /* === SCANNING LINE === */
@@ -185,9 +266,16 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.6), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 255, 0.6),
+    transparent
+  );
   animation: scan-move 4s ease-in-out infinite;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.4),
+    0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 .scan-line--2 {
@@ -197,12 +285,22 @@
 }
 
 @keyframes scan-move {
-  0%, 100% { top: 10%; }
-  50% { top: 90%; }
+  0%,
+  100% {
+    top: 10%;
+  }
+  50% {
+    top: 90%;
+  }
 }
 @keyframes scan-move-reverse {
-  0%, 100% { top: 85%; }
-  50% { top: 15%; }
+  0%,
+  100% {
+    top: 85%;
+  }
+  50% {
+    top: 15%;
+  }
 }
 
 /* === FLOATING PARTICLES === */
@@ -220,24 +318,84 @@
   animation: particle-float linear infinite;
 }
 
-.particle--1 { left: 10%; animation-duration: 8s; animation-delay: 0s; }
-.particle--2 { left: 20%; animation-duration: 12s; animation-delay: -2s; }
-.particle--3 { left: 35%; animation-duration: 10s; animation-delay: -4s; }
-.particle--4 { left: 50%; animation-duration: 14s; animation-delay: -1s; }
-.particle--5 { left: 65%; animation-duration: 9s; animation-delay: -6s; }
-.particle--6 { left: 75%; animation-duration: 11s; animation-delay: -3s; }
-.particle--7 { left: 85%; animation-duration: 13s; animation-delay: -5s; }
-.particle--8 { left: 92%; animation-duration: 7s; animation-delay: -7s; }
-.particle--9 { left: 5%; animation-duration: 15s; animation-delay: -8s; }
-.particle--10 { left: 42%; animation-duration: 10s; animation-delay: -9s; }
-.particle--11 { left: 58%; animation-duration: 8s; animation-delay: -3s; }
-.particle--12 { left: 28%; animation-duration: 11s; animation-delay: -6s; }
+.particle--1 {
+  left: 10%;
+  animation-duration: 8s;
+  animation-delay: 0s;
+}
+.particle--2 {
+  left: 20%;
+  animation-duration: 12s;
+  animation-delay: -2s;
+}
+.particle--3 {
+  left: 35%;
+  animation-duration: 10s;
+  animation-delay: -4s;
+}
+.particle--4 {
+  left: 50%;
+  animation-duration: 14s;
+  animation-delay: -1s;
+}
+.particle--5 {
+  left: 65%;
+  animation-duration: 9s;
+  animation-delay: -6s;
+}
+.particle--6 {
+  left: 75%;
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+.particle--7 {
+  left: 85%;
+  animation-duration: 13s;
+  animation-delay: -5s;
+}
+.particle--8 {
+  left: 92%;
+  animation-duration: 7s;
+  animation-delay: -7s;
+}
+.particle--9 {
+  left: 5%;
+  animation-duration: 15s;
+  animation-delay: -8s;
+}
+.particle--10 {
+  left: 42%;
+  animation-duration: 10s;
+  animation-delay: -9s;
+}
+.particle--11 {
+  left: 58%;
+  animation-duration: 8s;
+  animation-delay: -3s;
+}
+.particle--12 {
+  left: 28%;
+  animation-duration: 11s;
+  animation-delay: -6s;
+}
 
 @keyframes particle-float {
-  0% { bottom: -5%; opacity: 0; transform: translateX(0); }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { bottom: 105%; opacity: 0; transform: translateX(30px); }
+  0% {
+    bottom: -5%;
+    opacity: 0;
+    transform: translateX(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    bottom: 105%;
+    opacity: 0;
+    transform: translateX(30px);
+  }
 }
 
 /* === GRID FLOOR === */
@@ -253,13 +411,17 @@
     linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
   animation: grid-scroll 3s linear infinite;
-  mask: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 80%);
-  -webkit-mask: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 80%);
+  mask: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 80%);
+  -webkit-mask: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 80%);
 }
 
 @keyframes grid-scroll {
-  from { background-position: 0 0; }
-  to { background-position: 0 60px; }
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 60px;
+  }
 }
 
 /* === HEX DATA ARCS === */
@@ -296,8 +458,12 @@
 }
 
 @keyframes arc-spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 /* === VERTICAL BEAMS === */
@@ -331,8 +497,13 @@
 }
 
 @keyframes beam-pulse {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* === CORNER HUD ELEMENTS === */
@@ -375,8 +546,13 @@
 }
 
 @keyframes hud-blink {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* === PULSE RINGS (expanding from center) === */
@@ -400,27 +576,62 @@
 }
 
 @keyframes pulse-expand {
-  0% { width: 100px; height: 100px; opacity: 0.6; }
-  100% { width: 600px; height: 600px; opacity: 0; }
+  0% {
+    width: 100px;
+    height: 100px;
+    opacity: 0.6;
+  }
+  100% {
+    width: 600px;
+    height: 600px;
+    opacity: 0;
+  }
 }
 
 /* === TICKER LINES (horizontal data streams) === */
 .ticker {
   position: absolute;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), rgba(0, 255, 255, 0.8), rgba(0, 255, 255, 0.5), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 255, 255, 0.5),
+    rgba(0, 255, 255, 0.8),
+    rgba(0, 255, 255, 0.5),
+    transparent
+  );
   width: 120px;
   animation: ticker-move linear infinite;
 }
 
-.ticker--1 { top: 25%; animation-duration: 3s; animation-delay: 0s; }
-.ticker--2 { top: 40%; animation-duration: 4s; animation-delay: -1.5s; }
-.ticker--3 { top: 60%; animation-duration: 2.5s; animation-delay: -0.8s; }
-.ticker--4 { top: 75%; animation-duration: 3.5s; animation-delay: -2s; }
+.ticker--1 {
+  top: 25%;
+  animation-duration: 3s;
+  animation-delay: 0s;
+}
+.ticker--2 {
+  top: 40%;
+  animation-duration: 4s;
+  animation-delay: -1.5s;
+}
+.ticker--3 {
+  top: 60%;
+  animation-duration: 2.5s;
+  animation-delay: -0.8s;
+}
+.ticker--4 {
+  top: 75%;
+  animation-duration: 3.5s;
+  animation-delay: -2s;
+}
 
 @keyframes ticker-move {
-  0% { left: -120px; }
-  100% { left: 100%; }
+  0% {
+    left: -120px;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 /* === PODIUM DISC === */
@@ -485,13 +696,21 @@
 }
 
 @keyframes disc-spin-cw {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes disc-spin-ccw {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 /* Responsive — smaller screens adjust disc */
@@ -559,8 +778,12 @@
 }
 
 @keyframes gauge-sweep {
-  0% { stroke-dashoffset: 80; }
-  100% { stroke-dashoffset: 20; }
+  0% {
+    stroke-dashoffset: 80;
+  }
+  100% {
+    stroke-dashoffset: 20;
+  }
 }
 
 .gauge-dot {
@@ -568,8 +791,14 @@
 }
 
 @keyframes gauge-dot-move {
-  0% { cx: 55; cy: 38; }
-  100% { cx: 100; cy: 42; }
+  0% {
+    cx: 55;
+    cy: 38;
+  }
+  100% {
+    cx: 100;
+    cy: 42;
+  }
 }
 
 /* --- Status blink --- */
@@ -578,8 +807,13 @@
 }
 
 @keyframes blink-on {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
 }
 
 /* --- Connector dot pings --- */
@@ -591,26 +825,53 @@
 }
 
 @keyframes ping {
-  0%, 100% { r: 2.5; opacity: 0.6; }
-  50% { r: 4; opacity: 1; }
+  0%,
+  100% {
+    r: 2.5;
+    opacity: 0.6;
+  }
+  50% {
+    r: 4;
+    opacity: 1;
+  }
 }
 
 /* --- Bar chart animation --- */
 .bar {
   animation: bar-bounce 2.5s ease-in-out infinite alternate;
 }
-.bar--1 { animation-delay: 0s; }
-.bar--2 { animation-delay: -0.3s; }
-.bar--3 { animation-delay: -0.6s; }
-.bar--4 { animation-delay: -0.9s; }
-.bar--5 { animation-delay: -1.2s; }
-.bar--6 { animation-delay: -1.5s; }
-.bar--7 { animation-delay: -1.8s; }
+.bar--1 {
+  animation-delay: 0s;
+}
+.bar--2 {
+  animation-delay: -0.3s;
+}
+.bar--3 {
+  animation-delay: -0.6s;
+}
+.bar--4 {
+  animation-delay: -0.9s;
+}
+.bar--5 {
+  animation-delay: -1.2s;
+}
+.bar--6 {
+  animation-delay: -1.5s;
+}
+.bar--7 {
+  animation-delay: -1.8s;
+}
 
 @keyframes bar-bounce {
-  0% { transform: scaleY(1); }
-  50% { transform: scaleY(0.5); }
-  100% { transform: scaleY(1.15); }
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.5);
+  }
+  100% {
+    transform: scaleY(1.15);
+  }
 }
 
 /* --- Level meter animation --- */
@@ -618,14 +879,29 @@
   animation: level-fluctuate 2s ease-in-out infinite alternate;
   transform-origin: bottom;
 }
-.level--1 { animation-delay: 0s; }
-.level--2 { animation-delay: -0.7s; }
-.level--3 { animation-delay: -1.4s; }
+.level--1 {
+  animation-delay: 0s;
+}
+.level--2 {
+  animation-delay: -0.7s;
+}
+.level--3 {
+  animation-delay: -1.4s;
+}
 
 @keyframes level-fluctuate {
-  0% { transform: scaleY(1); opacity: 0.5; }
-  50% { transform: scaleY(0.6); opacity: 0.4; }
-  100% { transform: scaleY(1.1); opacity: 0.6; }
+  0% {
+    transform: scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(0.6);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scaleY(1.1);
+    opacity: 0.6;
+  }
 }
 
 /* --- Binary text scroll --- */
@@ -648,8 +924,12 @@
 }
 
 @keyframes text-scroll {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* --- Equalizer bars --- */
@@ -658,27 +938,65 @@
   transform-origin: bottom;
 }
 
-.eq--1  { animation-delay: 0s; }
-.eq--2  { animation-delay: -0.1s; }
-.eq--3  { animation-delay: -0.2s; }
-.eq--4  { animation-delay: -0.3s; }
-.eq--5  { animation-delay: -0.4s; }
-.eq--6  { animation-delay: -0.5s; }
-.eq--7  { animation-delay: -0.6s; }
-.eq--8  { animation-delay: -0.7s; }
-.eq--9  { animation-delay: -0.8s; }
-.eq--10 { animation-delay: -0.9s; }
-.eq--11 { animation-delay: -1.0s; }
-.eq--12 { animation-delay: -1.1s; }
-.eq--13 { animation-delay: -1.2s; }
-.eq--14 { animation-delay: -1.3s; }
-.eq--15 { animation-delay: -1.4s; }
-.eq--16 { animation-delay: -1.5s; }
+.eq--1 {
+  animation-delay: 0s;
+}
+.eq--2 {
+  animation-delay: -0.1s;
+}
+.eq--3 {
+  animation-delay: -0.2s;
+}
+.eq--4 {
+  animation-delay: -0.3s;
+}
+.eq--5 {
+  animation-delay: -0.4s;
+}
+.eq--6 {
+  animation-delay: -0.5s;
+}
+.eq--7 {
+  animation-delay: -0.6s;
+}
+.eq--8 {
+  animation-delay: -0.7s;
+}
+.eq--9 {
+  animation-delay: -0.8s;
+}
+.eq--10 {
+  animation-delay: -0.9s;
+}
+.eq--11 {
+  animation-delay: -1s;
+}
+.eq--12 {
+  animation-delay: -1.1s;
+}
+.eq--13 {
+  animation-delay: -1.2s;
+}
+.eq--14 {
+  animation-delay: -1.3s;
+}
+.eq--15 {
+  animation-delay: -1.4s;
+}
+.eq--16 {
+  animation-delay: -1.5s;
+}
 
 @keyframes eq-pulse {
-  0% { transform: scaleY(1); }
-  50% { transform: scaleY(0.3); }
-  100% { transform: scaleY(1.2); }
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.3);
+  }
+  100% {
+    transform: scaleY(1.2);
+  }
 }
 
 /* --- Ring gauge animation --- */
@@ -687,8 +1005,12 @@
 }
 
 @keyframes ring-gauge-fill {
-  0% { stroke-dashoffset: 80; }
-  100% { stroke-dashoffset: 30; }
+  0% {
+    stroke-dashoffset: 80;
+  }
+  100% {
+    stroke-dashoffset: 30;
+  }
 }
 
 /* --- Dial needles rotation --- */
@@ -710,16 +1032,28 @@
 }
 
 @keyframes dial-rotate-1 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 @keyframes dial-rotate-2 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
 }
 @keyframes dial-rotate-3 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* --- Data columns animation --- */
@@ -727,29 +1061,59 @@
   animation: datacol-shift 3s ease-in-out infinite alternate;
   transform-origin: bottom;
 }
-.datacol--1 { animation-delay: 0s; }
-.datacol--2 { animation-delay: -0.5s; }
-.datacol--3 { animation-delay: -1s; }
-.datacol--4 { animation-delay: -1.5s; }
-.datacol--5 { animation-delay: -2s; }
+.datacol--1 {
+  animation-delay: 0s;
+}
+.datacol--2 {
+  animation-delay: -0.5s;
+}
+.datacol--3 {
+  animation-delay: -1s;
+}
+.datacol--4 {
+  animation-delay: -1.5s;
+}
+.datacol--5 {
+  animation-delay: -2s;
+}
 
 @keyframes datacol-shift {
-  0% { transform: scaleY(1); opacity: 0.3; }
-  100% { transform: scaleY(0.6); opacity: 0.5; }
+  0% {
+    transform: scaleY(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scaleY(0.6);
+    opacity: 0.5;
+  }
 }
 
 /* --- Horizontal stepped bars --- */
 .step {
   animation: step-width 4s ease-in-out infinite alternate;
 }
-.step--1 { animation-delay: 0s; }
-.step--2 { animation-delay: -1s; }
-.step--3 { animation-delay: -2s; }
-.step--4 { animation-delay: -3s; }
+.step--1 {
+  animation-delay: 0s;
+}
+.step--2 {
+  animation-delay: -1s;
+}
+.step--3 {
+  animation-delay: -2s;
+}
+.step--4 {
+  animation-delay: -3s;
+}
 
 @keyframes step-width {
-  0% { transform: scaleX(1); opacity: 0.4; }
-  100% { transform: scaleX(0.7); opacity: 0.55; }
+  0% {
+    transform: scaleX(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scaleX(0.7);
+    opacity: 0.55;
+  }
 }
 
 .marker-blink {
@@ -762,15 +1126,135 @@
 /* --- Responsive: hide on small screens --- */
 @media (max-width: 600px) {
   .hud-panel {
-    width: 100px;
+    width: 60px;
   }
   .hud-foreground {
-    padding: 12px;
+    padding: 8px;
+  }
+  .hud-widget svg {
+    opacity: 0.5;
   }
 }
 
 @media (max-width: 400px) {
   .hud-foreground {
     display: none;
+  }
+}
+
+/* === TEXT WALL === */
+.text-wall {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: calc(100vw - 220px * 2 - 50px);
+  max-width: 600px;
+  bottom: 35%;
+  z-index: 5;
+  overflow-y: auto;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  animation: text-wall-fade-in 1.5s ease-out;
+}
+
+.text-wall__content {
+  color: rgba(220, 230, 255, 0.9);
+  font-family: "Georgia", serif;
+  font-size: 15px;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.text-wall__content p {
+  margin: 0 0 1.2em;
+}
+
+/* Scrollbar styling */
+.text-wall::-webkit-scrollbar {
+  width: 4px;
+}
+.text-wall::-webkit-scrollbar-track {
+  background: transparent;
+}
+.text-wall::-webkit-scrollbar-thumb {
+  background: rgba(0, 200, 255, 0.3);
+  border-radius: 2px;
+}
+
+@keyframes text-wall-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .text-wall {
+    width: calc(100vw - 60px * 2 - 20px);
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .text-wall {
+    width: calc(100vw - 30px);
+  }
+}
+
+/* === MOBILE PERFORMANCE FIXES === */
+@media (max-width: 768px) {
+  /* Reduce particle count by hiding half */
+  .particle--2,
+  .particle--4,
+  .particle--6,
+  .particle--8,
+  .particle--10,
+  .particle--12 {
+    display: none;
+  }
+
+  /* Hide expensive masked rings */
+  .hud-ring--4,
+  .hud-ring--5 {
+    display: none;
+  }
+
+  /* Simplify data arcs */
+  .data-arc--3 {
+    display: none;
+  }
+
+  /* Hide some orbit dots */
+  .orbit-dot--3,
+  .orbit-dot--5 {
+    display: none;
+  }
+
+  /* Hide tickers */
+  .ticker--2,
+  .ticker--4 {
+    display: none;
+  }
+
+  /* Disable pulse rings (expensive expand animation) */
+  .pulse-ring--3 {
+    display: none;
+  }
+
+  /* Promote animated elements to own layers */
+  .hud-ring,
+  .orbit-dot,
+  .scan-line,
+  .disc-ring,
+  .particle {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }

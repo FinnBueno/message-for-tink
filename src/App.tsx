@@ -1,9 +1,34 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import "./background.css";
+import { MESSAGE_TEXT } from "./messageContent";
+
+// --- Artifact shape ---
+const ARTIFACT_COLOR = 0xf4ea80;
+const ARTIFACT_EMISSIVE = 0x8a7040;
+const ARTIFACT_METALNESS = 0.2;
+const ARTIFACT_ROUGHNESS = 0.55;
+const ARTIFACT_THICKNESS = 0.27;
+const ARTIFACT_ARM_LENGTH = 0.75;
+
+// --- Lighting ---
+const LIGHT_MAIN_COLOR = 0xfff0d0;
+const LIGHT_MAIN_INTENSITY = 2;
+const LIGHT_FILL_COLOR = 0xd4a040;
+const LIGHT_FILL_INTENSITY = 1.2;
+const LIGHT_AMBIENT_COLOR = 0xffffff;
+const LIGHT_AMBIENT_INTENSITY = 1.2;
+const LIGHT_POINT_COLOR = 0xffe0a0;
+const LIGHT_POINT_INTENSITY = 1.5;
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [showText, setShowText] = useState(false);
+  const onArtifactClick = useRef<() => void>(() => {});
+
+  useEffect(() => {
+    onArtifactClick.current = () => setShowText(true);
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -20,64 +45,155 @@ export default function App() {
     );
     camera.position.z = 3;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const isMobile = window.innerWidth <= 768;
+    const renderer = new THREE.WebGLRenderer({ antialias: !isMobile, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Cube with glowing edges
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    // Generate rough stone-like texture as a color map
+    const stoneCanvas = document.createElement("canvas");
+    stoneCanvas.width = 256;
+    stoneCanvas.height = 256;
+    const ctx = stoneCanvas.getContext("2d")!;
+    // Base color matching the artifact
+    ctx.fillStyle = "#d4aa40";
+    ctx.fillRect(0, 0, 256, 256);
+    // Add heavy noise for stone grain — darker splotches
+    for (let i = 0; i < 15000; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      const darkening = Math.floor(Math.random() * 60);
+      ctx.fillStyle = `rgba(40, 20, 0, ${(darkening + 20) / 255})`;
+      ctx.fillRect(x, y, Math.random() * 4 + 1, Math.random() * 4 + 1);
+    }
+    // Add larger dark patches for visible stone texture
+    for (let i = 0; i < 60; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      const alpha = 0.15 + Math.random() * 0.25;
+      ctx.fillStyle = `rgba(30, 15, 0, ${alpha})`;
+      ctx.beginPath();
+      ctx.ellipse(x, y, Math.random() * 15 + 5, Math.random() * 10 + 4, Math.random() * Math.PI, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // Add lighter highlights
+    for (let i = 0; i < 3000; i++) {
+      const x = Math.random() * 256;
+      const y = Math.random() * 256;
+      ctx.fillStyle = `rgba(255, 240, 180, ${0.08 + Math.random() * 0.12})`;
+      ctx.fillRect(x, y, Math.random() * 2 + 1, Math.random() * 2 + 1);
+    }
+
+    const stoneTexture = new THREE.CanvasTexture(stoneCanvas);
+    stoneTexture.wrapS = THREE.RepeatWrapping;
+    stoneTexture.wrapT = THREE.RepeatWrapping;
+    stoneTexture.repeat.set(2, 2);
+
     const material = new THREE.MeshStandardMaterial({
-      color: 0x00ccff,
-      emissive: 0x003344,
-      metalness: 0.8,
-      roughness: 0.2,
+      color: ARTIFACT_COLOR,
+      emissive: ARTIFACT_EMISSIVE,
+      metalness: ARTIFACT_METALNESS,
+      roughness: ARTIFACT_ROUGHNESS,
+      map: stoneTexture,
+      bumpMap: stoneTexture,
+      bumpScale: 0.6,
     });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
 
-    // Wireframe overlay for holographic look
-    const wireframeMat = new THREE.MeshBasicMaterial({
-      color: 0x00ffff,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.3,
-    });
-    const wireframe = new THREE.Mesh(geometry, wireframeMat);
-    cube.add(wireframe);
+    const artifact = new THREE.Group();
+    const t = ARTIFACT_THICKNESS;
+    const L = ARTIFACT_ARM_LENGTH;
 
-    // Edge glow
-    const edges = new THREE.EdgesGeometry(geometry);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.7 });
-    const lineSegments = new THREE.LineSegments(edges, lineMat);
-    cube.add(lineSegments);
+    // + sign: 2 horizontal bars crossing at center, each arm = L from center
+    const barX = new THREE.Mesh(new THREE.BoxGeometry(L * 2, t, t), material);
+    artifact.add(barX);
+    const barZ = new THREE.Mesh(new THREE.BoxGeometry(t, t, L * 2), material);
+    artifact.add(barZ);
+
+    // 4 pillars at 90° angles from the ends of the +, each length = L
+    // Positioned so they form a true 90° bend (pillar starts at the arm tip)
+    const pillarGeom = new THREE.BoxGeometry(t, L, t);
+
+    const pillarPosX = new THREE.Mesh(pillarGeom, material);
+    pillarPosX.position.set(L - t / 2, L / 2, 0);
+    artifact.add(pillarPosX);
+
+    const pillarNegX = new THREE.Mesh(pillarGeom, material);
+    pillarNegX.position.set(-L + t / 2, L / 2, 0);
+    artifact.add(pillarNegX);
+
+    const pillarPosZ = new THREE.Mesh(pillarGeom, material);
+    pillarPosZ.position.set(0, L / 2, L - t / 2);
+    artifact.add(pillarPosZ);
+
+    const pillarNegZ = new THREE.Mesh(pillarGeom, material);
+    pillarNegZ.position.set(0, L / 2, -L + t / 2);
+    artifact.add(pillarNegZ);
+
+    // 1 pillar pointing down from the center, same length L
+    const pillarDown = new THREE.Mesh(pillarGeom, material);
+    pillarDown.position.set(0, -L / 2, 0);
+    artifact.add(pillarDown);
+
+    scene.add(artifact);
 
     // Lights
-    const light = new THREE.DirectionalLight(0x00ccff, 2);
+    const light = new THREE.DirectionalLight(LIGHT_MAIN_COLOR, LIGHT_MAIN_INTENSITY);
     light.position.set(2, 3, 4);
     scene.add(light);
 
-    const light2 = new THREE.DirectionalLight(0x0066ff, 1);
+    const light2 = new THREE.DirectionalLight(LIGHT_FILL_COLOR, LIGHT_FILL_INTENSITY);
     light2.position.set(-2, -1, 2);
     scene.add(light2);
 
-    const ambientLight = new THREE.AmbientLight(0x004466, 0.6);
+    const ambientLight = new THREE.AmbientLight(LIGHT_AMBIENT_COLOR, LIGHT_AMBIENT_INTENSITY);
     scene.add(ambientLight);
 
     // Point light that orbits
-    const pointLight = new THREE.PointLight(0x00ffcc, 1.5, 10);
+    const pointLight = new THREE.PointLight(LIGHT_POINT_COLOR, LIGHT_POINT_INTENSITY, 10);
     scene.add(pointLight);
 
     let animationId: number;
     let time = 0;
+    let spinning = true;
+    let transitioning = false;
+
+    // Target state when clicked: pillars pointing up, moved to bottom
+    const targetPosition = new THREE.Vector3(0, -1.5, 0);
+    const targetRotation = new THREE.Euler(0, 0, 0);
+    const transitionDuration = 1.5; // seconds
+    let transitionProgress = 0;
+    const startPosition = new THREE.Vector3();
+    const startRotation = new THREE.Euler();
+
+    // Smooth easing function (ease-in-out cubic)
+    function easeInOutCubic(t: number) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
 
     function animate() {
       animationId = requestAnimationFrame(animate);
       time += 0.01;
 
-      cube.rotation.x += 0.005;
-      cube.rotation.y += 0.007;
-      cube.rotation.z += 0.003;
+      if (spinning) {
+        artifact.rotation.x += 0.005;
+        artifact.rotation.y += 0.007;
+        artifact.rotation.z += 0.003;
+      } else if (transitioning) {
+        transitionProgress += (1 / 60) / transitionDuration;
+        if (transitionProgress >= 1) {
+          transitionProgress = 1;
+          transitioning = false;
+        }
+        const t = easeInOutCubic(transitionProgress);
+
+        // Interpolate position
+        artifact.position.lerpVectors(startPosition, targetPosition, t);
+        // Interpolate rotation
+        artifact.rotation.x = startRotation.x + (targetRotation.x - startRotation.x) * t;
+        artifact.rotation.y = startRotation.y + (targetRotation.y - startRotation.y) * t;
+        artifact.rotation.z = startRotation.z + (targetRotation.z - startRotation.z) * t;
+      }
 
       // Orbiting point light
       pointLight.position.x = Math.sin(time * 2) * 3;
@@ -87,6 +203,26 @@ export default function App() {
       renderer.render(scene, camera);
     }
     animate();
+
+    // Click detection with raycasting
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function handleClick(event: MouseEvent) {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(artifact.children);
+      if (intersects.length > 0 && spinning) {
+        spinning = false;
+        transitioning = true;
+        transitionProgress = 0;
+        startPosition.copy(artifact.position);
+        startRotation.copy(artifact.rotation);
+        onArtifactClick.current();
+      }
+    }
+    renderer.domElement.addEventListener("click", handleClick);
 
     function handleResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -98,6 +234,7 @@ export default function App() {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", handleResize);
+      renderer.domElement.removeEventListener("click", handleClick);
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
@@ -418,6 +555,17 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* Text wall */}
+      {showText && (
+        <div className="text-wall">
+          <div className="text-wall__content">
+            {MESSAGE_TEXT.split("\n\n").map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
